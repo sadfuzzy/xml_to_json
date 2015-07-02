@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?Siebel-Property-Set EscapeNames="true"?>
+<?Siebel-Property-Set EscapeNames="true"?>
+<SiebelMessage>
+  <_sblesc_und_undPROPERTIES_und_und>
+    <TargetServerPath/>
+    <SourceServiceMethod/>
+    <SchemaVersion>48.33.60.0</SchemaVersion>
+    <SRFVersion>43|1379580440|1431625900</SRFVersion>
+    <SessionId>1-E1VS</SessionId>
+    <AcknowledgementWorkflow>UDA Acknowledgement</AcknowledgementWorkflow>
+    <PostProcessWorkflow>Testing</PostProcessWorkflow>
+    <Asynchronous>Y</Asynchronous>
+    <TransactionLogFileName>1-E1VS</TransactionLogFileName>
+    <TransactionName>Workflow_Policy</TransactionName>
+    <AsyncExportFile>N</AsyncExportFile>
+    <UserName/>
+    <Password/>
+    <TargetServiceName/>
+    <AsyncDataPrep>Y</AsyncDataPrep>
+    <TargetWorkflow>UDA Target Workflow</TargetWorkflow>
+    <EAIQueueType>On Error</EAIQueueType>
+    <TargetServiceMethod/>
+    <SourceServiceName/>
+    <TargetSubsystem>UDADeploy</TargetSubsystem>
+    <Description/>
+    <SessionProjectName>WP</SessionProjectName>
+    <ExportFilePath>c:\temp\siebel_configs</ExportFilePath>
+    <TransactionLogFilePath>C:\Siebel\Client\temp\1-E1VS.log</TransactionLogFilePath>
+    <TransactionId>1-E1VV</TransactionId>
+  </_sblesc_und_undPROPERTIES_und_und>
+  <EAIMessage>
+    <_sblesc_und_undPROPERTIES_und_und>
+      <SessionItemName>Workflow_Policy</SessionItemName>
+      <SessionName>EMT Session</SessionName>
+      <DataTypeName>SBL Workflow Policy</DataTypeName>
+      <MessageId/>
+      <GroupName>Workflow_Policy</GroupName>
+      <MessageType>Integration Object</MessageType>
+      <IntObjectName>Workflow Policy</IntObjectName>
+      <IntObjectFormat>Siebel Hierarchical</IntObjectFormat>
+      <EAIMethod>Synchronize</EAIMethod>
+    </_sblesc_und_undPROPERTIES_und_und>
+    <ListOfWorkflow_spcPolicy>
+      <Workflow_spcPolicy>
+        <_sblesc_und_undPROPERTIES_und_und>
+          <Comments/>
+          <Time>0</Time>
+          <Created_spcBy_spcName>SADMIN</Created_spcBy_spcName>
+          <Activation_spcDate_slhTime/>
+          <Group>Marketing</Group>
+          <Expiration_spcDate_slhTime>03/01/2002 04:00:00</Expiration_spcDate_slhTime>
+          <Sub_spcType>Workflow</Sub_spcType>
+          <Object>Data Retrieval</Object>
+          <Batch_spcFlag>N</Batch_spcFlag>
+          <Name>Automatic Data Retrieval</Name>
+          <Qualify_spcCount/>
+        </_sblesc_und_undPROPERTIES_und_und>
+        <ListOfWorkflow_spcAction>
+          <Workflow_spcAction>
+            <_sblesc_und_undPROPERTIES_und_und>
+              <Frequency/>
+              <Position/>
+              <Action_spcProgram>Run Workflow Process</Action_spcProgram>
+              <Consolidate_spcFlag/>
+              <Contact_spcId/>
+              <Relative/>
+              <Contact_spcFirst_spcName/>
+              <Notification_spcType/>
+              <Position_spcId/>
+              <Action>Automatic Data Retrieval</Action>
+              <Sequence>1</Sequence>
+              <Contact_spcLast_spcName/>
+            </_sblesc_und_undPROPERTIES_und_und>
+          </Workflow_spcAction>
+        </ListOfWorkflow_spcAction>
+        <ListOfWorkflow_spcCondition>
+          <Workflow_spcCondition>
+            <_sblesc_und_undPROPERTIES_und_und>
+              <Source_spcField/>
+              <Condition_spcColumn_spcId>1-1-13IIF</Condition_spcColumn_spcId>
+              <Column_spcTranslation_spcTable_spcId/>
+              <Pick_spcApplet/>
+              <Column_spcId>1-1-JSJS</Column_spcId>
+              <Column_spcData_spcType>V</Column_spcData_spcType>
+              <WF_spcLink_spcName>ETL Run Status</WF_spcLink_spcName>
+              <Pick_spcList/>
+              <Link_spcId>1-1-13IWT</Link_spcId>
+              <Real_spcValue>ETL%</Real_spcValue>
+              <Comparison>LIKE</Comparison>
+              <Condition_spcColumn_spcName>ETL Process Name</Condition_spcColumn_spcName>
+              <Column_spcLov_spcType/>
+            </_sblesc_und_undPROPERTIES_und_und>
+          </Workflow_spcCondition>
+          <Workflow_spcCondition>
+            <_sblesc_und_undPROPERTIES_und_und>
+              <Source_spcField/>
+              <Condition_spcColumn_spcId>1-1-13IIH</Condition_spcColumn_spcId>
+              <Column_spcTranslation_spcTable_spcId/>
+              <Pick_spcApplet/>
+              <Column_spcId>1-1-KECT</Column_spcId>
+              <Column_spcData_spcType>U</Column_spcData_spcType>
+              <WF_spcLink_spcName>ETL Run Status</WF_spcLink_spcName>
+              <Pick_spcList/>
+              <Link_spcId>1-1-13IWT</Link_spcId>
+              <Real_spcValue/>
+              <Comparison>IS UPDATED</Comparison>
+              <Condition_spcColumn_spcName>ETL Run End Date</Condition_spcColumn_spcName>
+              <Column_spcLov_spcType/>
+            </_sblesc_und_undPROPERTIES_und_und>
+          </Workflow_spcCondition>
+          <Workflow_spcCondition>
+            <_sblesc_und_undPROPERTIES_und_und>
+              <Source_spcField>Value</Source_spcField>
+              <Condition_spcColumn_spcId>1-1-13III</Condition_spcColumn_spcId>
+              <Column_spcTranslation_spcTable_spcId>1-1-IZX9</Column_spcTranslation_spcTable_spcId>
+              <Pick_spcApplet/>
+              <Column_spcId>1-1-J140</Column_spcId>
+              <Column_spcData_spcType>V</Column_spcData_spcType>
+              <WF_spcLink_spcName>ETL Run Status</WF_spcLink_spcName>
+              <Pick_spcList/>
+              <Link_spcId>1-1-13IWT</Link_spcId>
+              <Real_spcValue>COMPLETED</Real_spcValue>
+              <Comparison>=</Comparison>
+              <Condition_spcColumn_spcName>ETL Run Status</Condition_spcColumn_spcName>
+              <Column_spcLov_spcType>ETL_STATUS</Column_spcLov_spcType>
+            </_sblesc_und_undPROPERTIES_und_und>
+          </Workflow_spcCondition>
+        </ListOfWorkflow_spcCondition>
+      </Workflow_spcPolicy>
+    </ListOfWorkflow_spcPolicy>
+  </EAIMessage>
+</SiebelMessage>
