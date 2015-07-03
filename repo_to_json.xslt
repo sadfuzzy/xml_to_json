@@ -1,56 +1,70 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="text" encoding="utf-8"/>
 
-  <xsl:output method="text"/>
- 
-  <xsl:variable name="quote"><![CDATA[\\"]]></xsl:variable>
+	<xsl:template match="/*[node()]">
+		<xsl:text>{</xsl:text>
+		<xsl:apply-templates select="." mode="detect" />
+		<xsl:text>}</xsl:text>
+	</xsl:template>
 
-  <xsl:template match="REPOSITORY">
-    <xsl:apply-templates select="PROJECT"/>
-  </xsl:template>
+	<xsl:template match="*" mode="detect">
+		<xsl:choose>
+			<xsl:when test="name(preceding-sibling::*[1]) = name(current()) and name(following-sibling::*[1]) != name(current())">
+					<xsl:apply-templates select="." mode="obj-content" />
+				<xsl:text>]</xsl:text>
+				<xsl:if test="count(following-sibling::*[name() != name(current())]) &gt; 0">, </xsl:if>
+			</xsl:when>
+			<xsl:when test="name(preceding-sibling::*[1]) = name(current())">
+					<xsl:apply-templates select="." mode="obj-content" />
+					<xsl:if test="name(following-sibling::*) = name(current())">, </xsl:if>
+			</xsl:when>
+			<xsl:when test="following-sibling::*[1][name() = name(current())]">
+				<xsl:text>"</xsl:text><xsl:value-of select="name()"/><xsl:text>" : [</xsl:text>
+					<xsl:apply-templates select="." mode="obj-content" /><xsl:text>, </xsl:text>
+			</xsl:when>
+			<xsl:when test="count(./child::*) > 0 or count(@*) > 0">
+				<xsl:text>"</xsl:text><xsl:value-of select="name()"/>" : <xsl:apply-templates select="." mode="obj-content" />
+				<xsl:if test="count(following-sibling::*) &gt; 0">, </xsl:if>
+			</xsl:when>
+			<xsl:when test="count(./child::*) = 0">
+				<xsl:text>"</xsl:text><xsl:value-of select="name()"/>" : "<xsl:apply-templates select="."/><xsl:text>"</xsl:text>
+				<xsl:if test="count(following-sibling::*) &gt; 0">, </xsl:if>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
 
-  <xsl:template match="PROJECT">
-    {
-      <xsl:apply-templates select="child::*[child::*]" mode="root">
-        <xsl:sort select="local-name()"/>
-      </xsl:apply-templates>
-    }
-  </xsl:template>
+	<xsl:template match="*" mode="obj-content">
+		<xsl:text>{</xsl:text>
+			<xsl:apply-templates select="@*" mode="attr" />
+			<xsl:if test="count(@*) &gt; 0 and (count(child::*) &gt; 0 or text())">, </xsl:if>
+			<xsl:apply-templates select="./*" mode="detect" />
+			<xsl:if test="count(child::*) = 0 and text() and not(@*)">
+				<xsl:text>"</xsl:text><xsl:value-of select="name()"/>" : "<xsl:value-of select="text()"/><xsl:text>"</xsl:text>
+			</xsl:if>
+			<xsl:if test="count(child::*) = 0 and text() and @*">
+				<xsl:text>"text" : "</xsl:text><xsl:value-of select="text()"/><xsl:text>"</xsl:text>
+			</xsl:if>
+		<xsl:text>}</xsl:text>
+		<xsl:if test="position() &lt; last()">, </xsl:if>
+	</xsl:template>
 
-  <xsl:template match="*" mode="root">
-    "<xsl:value-of select="./NAME"/>":
-    {
-      "PROJECT_NAME": "<xsl:value-of select="../NAME"/>"<xsl:if test="count(child::*)&gt;0">,</xsl:if>
-      <xsl:apply-templates select="." mode="object"/>
-    }
-  </xsl:template>
+	<xsl:template match="@*" mode="attr">
+		<xsl:text>"</xsl:text><xsl:value-of select="name()"/>" : "<xsl:value-of select="."/><xsl:text>"</xsl:text>
+		<xsl:if test="position() &lt; last()">,</xsl:if>
+	</xsl:template>
 
-  <xsl:template match="*" mode="object">
-    <xsl:for-each select="*[count(child::*)=0 and local-name() != 'NAME' and local-name() != 'UPDATED' and local-name() != 'UPDATED_BY' and local-name() != 'CREATED' and local-name() != 'CREATED_BY' and local-name() != 'OBJECT_LOCKED_DATE' and local-name() != 'OBJECT_LANGUAGE_LOCKED' and local-name() != 'OBJECT_LOCKED' and local-name() != 'OBJECT_LOCKED_BY_NAME']">
-      <xsl:apply-templates select="." mode="attrib"/>
-      <xsl:if test="position() != last() or count(../child::*[count(child::*)&gt;0])&gt;0">,</xsl:if>
-    </xsl:for-each>
+	<xsl:template match="node/@TEXT | text()" name="removeBreaks">
+		<xsl:param name="pText" select="normalize-space(.)"/>
+		<xsl:choose>
+			<xsl:when test="not(contains($pText, '&#xA;'))"><xsl:copy-of select="$pText"/></xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat(substring-before($pText, '&#xD;&#xA;'), ' ')"/>
+				<xsl:call-template name="removeBreaks">
+					<xsl:with-param name="pText" select="substring-after($pText, '&#xD;&#xA;')"/>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
-    <xsl:for-each-group select="*[count(child::*)&gt;0]" group-by="local-name()">
-      "<xsl:value-of select="current-grouping-key()"/>":
-      {
-        <xsl:for-each select="current-group()">
-          <xsl:apply-templates select="." mode="child"/>
-          <xsl:if test="position() != last()">,</xsl:if>
-        </xsl:for-each>
-      }
-      <xsl:if test="position() != last()">,</xsl:if>
-    </xsl:for-each-group>
-  </xsl:template>
-
-  <xsl:template match="*" mode="attrib">
-    "<xsl:value-of select="local-name()"/>": "<xsl:value-of disable-output-escaping="yes" select="replace(., '&quot;', $quote)"/>"
-  </xsl:template>
-
-  <xsl:template match="*" mode="child">
-    "<xsl:value-of select="./NAME"/>":
-    {
-      <xsl:apply-templates select="." mode="object"/>
-    }
-  </xsl:template>
 </xsl:stylesheet>
